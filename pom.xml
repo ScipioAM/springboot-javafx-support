@@ -5,30 +5,25 @@
 
   <groupId>de.roskenet</groupId>
   <artifactId>springboot-javafx-support</artifactId>
-  <version>2.1.7-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>springboot-javafx-support</name>
-  <description>Support for Spring Boot and JavaFX 8</description>
-  <url>http://springboot-javafx-support.readthedocs.io</url>
+  <description>Support for Spring Boot and JavaFX</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <junit.version>5.0.1</junit.version>
-    <junit-platform.version>1.0.1</junit-platform.version>
-    <testfx.version>4.0.8-alpha</testfx.version>
-    <spring-framework.version>5.0.0.RELEASE</spring-framework.version>
-    <spring-boot.version>2.0.0.RELEASE</spring-boot.version>
-    <slf4j.version>1.7.25</slf4j.version>
+    <maven.compiler.source>11.0.7</maven.compiler.source>
+    <maven.compiler.target>11.0.7</maven.compiler.target>
+    <javafx.version>11</javafx.version>
+    <junit.version>5.6.2</junit.version>
+    <junit-platform.version>1.6.2</junit-platform.version>
+    <testfx.version>4.0.16-alpha</testfx.version>
+    <spring-framework.version>5.2.7.RELEASE</spring-framework.version>
+    <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+    <slf4j.version>1.7.30</slf4j.version>
+    <plugin.javafx.version>0.0.4</plugin.javafx.version>
   </properties>
-
-  <scm>
-    <connection>git@github.com:roskenet/springboot-javafx-support.git</connection>
-    <developerConnection>git@github.com:roskenet/springboot-javafx-support.git</developerConnection>
-    <url>https://github.com/roskenet/springboot-javafx-support</url>
-  </scm>
 
   <developers>
     <developer>
@@ -36,6 +31,11 @@
       <email>f.roske@roskenet.de</email>
       <url>http://www.felixroske.de</url>
       <organization>roskenet</organization>
+    </developer>
+    <developer>
+      <name>Alan Scipio</name>
+      <email>alansipioxs@gmail.com</email>
+      <organization>AMAPC</organization>
     </developer>
   </developers>
 
@@ -46,6 +46,16 @@
   </licenses>
 
   <dependencies>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
@@ -105,12 +115,6 @@
       <artifactId>testfx-core</artifactId>
       <version>${testfx.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.testfx</groupId>
-        <artifactId>testfx-core</artifactId>
-        <version>${testfx.version}</version>
-        <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testfx</groupId>
@@ -224,6 +228,14 @@
                 </dependency>
             </dependencies>
         </plugin>
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>${plugin.javafx.version}</version>
+        <configuration>
+          <mainClass>de.felixroske.jfxtest.SampleApp</mainClass>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

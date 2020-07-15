@@ -21,11 +21,11 @@ public enum GUIState {
 	private static Stage stage;
 
 	private static String title;
-	
+
 	private static HostServices hostServices;
 
 	private static SystemTray systemTray;
-	
+
 	public static String getTitle() {
 		return title;
 	}
@@ -50,20 +50,20 @@ public enum GUIState {
 		GUIState.title = title;
 	}
 
-    public static HostServices getHostServices() {
-        return hostServices;
-    }
+	public static HostServices getHostServices() {
+		return hostServices;
+	}
 
-    static void setHostServices(HostServices hostServices) {
-        GUIState.hostServices = hostServices;
-    }
+	static void setHostServices(HostServices hostServices) {
+		GUIState.hostServices = hostServices;
+	}
 
-    public static SystemTray getSystemTray() {
-        return systemTray;
-    }
+	public static SystemTray getSystemTray() {
+		return systemTray;
+	}
 
-    static void setSystemTray(SystemTray systemTray) {
-        GUIState.systemTray = systemTray;
-    }
+	static void setSystemTray(SystemTray systemTray) {
+		GUIState.systemTray = systemTray;
+	}
 
 }

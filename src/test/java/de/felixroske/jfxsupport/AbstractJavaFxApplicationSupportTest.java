@@ -28,16 +28,15 @@ public class AbstractJavaFxApplicationSupportTest {
     public void setup() throws Exception {
         FxToolkit.registerPrimaryStage();
         app = new TestApp();
-        app.savedInitialView = SampleView.class;
-        app.splashScreen = new SplashScreen();
+        AbstractJavaFxApplicationSupport.savedInitialView = SampleView.class;
+        AbstractJavaFxApplicationSupport.splashScreen = new SplashScreen();
         FxToolkit.setupApplication(() -> app);
     }
 
     @Test
     @DisplayName ("Load default icons")
     public void loadDefaultIcons() {
-        final Collection<Image> images = new ArrayList<>();
-        images.addAll(app.loadDefaultIcons());
+        final Collection<Image> images = new ArrayList<>(app.loadDefaultIcons());
         assertThat(images.size(), CoreMatchers.is(5));
     }
 }

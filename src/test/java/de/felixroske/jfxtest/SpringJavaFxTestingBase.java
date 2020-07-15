@@ -22,7 +22,7 @@ public class SpringJavaFxTestingBase implements ApplicationContextAware {
     @BeforeAll
     public static void beforeAll() {
         String headlessProp = System.getProperty("JAVAFX_HEADLESS", "true");
-        Boolean headless = Boolean.valueOf(headlessProp);
+        boolean headless = Boolean.parseBoolean(headlessProp);
         String geometryProp = System.getProperty("JAVAFX_GEOMETRY", "1600x1200-32");
 
         if (headless) {

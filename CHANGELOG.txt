@@ -1,3 +1,5 @@
+3.0.0 upgrade to Java11
+
 -- Branch for Spring Boot 2.x:
 2.1.6 Concurrency fixes
       Fix concurrency issues

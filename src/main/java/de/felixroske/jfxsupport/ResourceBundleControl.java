@@ -29,12 +29,12 @@ public final class ResourceBundleControl extends ResourceBundle.Control {
 
     @Override
     public ResourceBundle newBundle(
-        final String baseName,
-        final Locale locale,
-        final String format,
-        final ClassLoader loader,
-        final boolean reload)
-    throws IllegalAccessException, InstantiationException, IOException {
+            final String baseName,
+            final Locale locale,
+            final String format,
+            final ClassLoader loader,
+            final boolean reload)
+            throws IllegalAccessException, InstantiationException, IOException {
 
         final String bundleName = toBundleName(baseName, locale);
         final String resourceName = toResourceName(bundleName, "properties");
@@ -57,7 +57,7 @@ public final class ResourceBundleControl extends ResourceBundle.Control {
         if (stream != null) {
             try {
                 bundle = new PropertyResourceBundle(new InputStreamReader(
-                    stream, charset));
+                        stream, charset));
             } finally {
                 stream.close();
             }

@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IncorrectViewTest extends SpringJavaFxTestingBase {
 
+    @Qualifier("/i_do_not_exist.fxml")
     @Autowired
     SampleIncorrectView incorrectView;
     Stage stage;

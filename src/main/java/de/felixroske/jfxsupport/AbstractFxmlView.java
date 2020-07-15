@@ -1,27 +1,34 @@
 package de.felixroske.jfxsupport;
 
-import org.slf4j.*;
-import org.springframework.beans.*;
-import org.springframework.context.*;
-import org.springframework.util.*;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.StageStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.StringUtils;
 
-import java.io.*;
-import java.net.*;
-import java.nio.charset.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
-import javafx.application.*;
-import javafx.beans.property.*;
-import javafx.beans.value.*;
-import javafx.collections.*;
-import javafx.fxml.*;
-import javafx.scene.*;
-import javafx.scene.image.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
-import static java.util.ResourceBundle.*;
+import static java.util.ResourceBundle.getBundle;
 
 /**
  * Base class for fxml-based view classes.
@@ -59,12 +66,6 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 
 	private String fxmlRoot;
-
-	private Stage stage;
-
-	private Modality currentStageModality;
-
-	private boolean isPrimaryStageView = false;
 
 	/**
 	 * Instantiates a new abstract fxml view.
@@ -177,104 +178,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 		presenterProperty.set(fxmlLoader.getController());
 	}
 
-    /**
-     * Sets up the first view using the primary {@link Stage}
-     */
-	protected void initFirstView() {
-        isPrimaryStageView = true;
-	    stage = GUIState.getStage();
-        Scene scene = getView().getScene() != null ? getView().getScene() : new Scene(getView());
-        stage.setScene(scene);
-        GUIState.setScene(scene);
-    }
-
-    public void hide() {
-	    if (stage != null)
-	        stage.hide();
-    }
-
-    /**
-     * Shows the FxmlView instance being the child stage of the given {@link Window}
-     *
-     * @param window
-     *          The owner of the FxmlView instance
-     * @param modality
-     *          See {@code javafx.stage.Modality}.
-     */
-    public void showView(Window window, Modality modality) {
-        if (! isPrimaryStageView && (stage == null || currentStageModality != modality || !Objects.equals(stage.getOwner(), window))) {
-            stage = createStage(modality);
-            stage.initOwner(window);
-        }
-        stage.show();
-    }
-
-    /**
-     * Shows the FxmlView instance on a top level {@link Window}
-     *
-     * @param modality
-     *          See {@code javafx.stage.Modality}.
-     */
-    public void showView(Modality modality) {
-        if (! isPrimaryStageView && (stage == null || currentStageModality != modality)) {
-            stage = createStage(modality);
-        }
-        stage.show();
-    }
-
-    /**
-     * Shows the FxmlView instance being the child stage of the given {@link Window} and waits
-     * to be closed before returning to the caller.
-     *
-     * @param window
-     *          The owner of the FxmlView instance
-     * @param modality
-     *          See {@code javafx.stage.Modality}.
-     */
-    public void showViewAndWait(Window window, Modality modality) {
-        if (isPrimaryStageView) {
-            showView(modality); // this modality will be ignored anyway
-            return;
-        }
-        if (stage == null || currentStageModality != modality || !Objects.equals(stage.getOwner(), window)) {
-            stage = createStage(modality);
-            stage.initOwner(window);
-        }
-        stage.showAndWait();
-    }
-
-    /**
-     * Shows the FxmlView instance on a top level {@link Window} and waits to be closed before
-     * returning to the caller.
-     *
-     * @param modality
-     *          See {@code javafx.stage.Modality}.
-     */
-    public void showViewAndWait(Modality modality) {
-        if (isPrimaryStageView) {
-            showView(modality); // this modality will be ignored anyway
-            return;
-        }
-        if (stage == null || currentStageModality != modality) {
-            stage = createStage(modality);
-        }
-        stage.showAndWait();
-    }
-
-    private Stage createStage(Modality modality) {
-        currentStageModality = modality;
-        Stage stage = new Stage();
-        stage.initModality(modality);
-        stage.setTitle(getDefaultTitle());
-        stage.initStyle(getDefaultStyle());
-        List<Image> primaryStageIcons = GUIState.getStage().getIcons();
-        stage.getIcons().addAll(primaryStageIcons);
-        Scene scene = getView().getScene() != null ? getView().getScene() : new Scene(getView());
-        stage.setScene(scene);
-        return stage;
-    }
-
-    /**
+	/**
 	 * Initializes the view by loading the FXML (if not happened yet) and
 	 * returns the top Node (parent) specified in the FXML file.
 	 *
@@ -369,17 +273,17 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 	 * Gets the default title for to be shown in a (un)modal window.
 	 *
 	 */
-    String getDefaultTitle() {
-        return annotation.title();
-    }
+	String getDefaultTitle() {
+		return annotation.title();
+	}
 
-    /*
-     * Gets the default style for a (un)modal window.
-     */
-    StageStyle getDefaultStyle() {
-        final String style = annotation.stageStyle();
-        return StageStyle.valueOf(style.toUpperCase());
-    }
+	/*
+	 * Gets the default style for a (un)modal window.
+	 */
+	StageStyle getDefaultStyle() {
+		final String style = annotation.stageStyle();
+		return StageStyle.valueOf(style.toUpperCase());
+	}
 
 	/**
 	 * Gets the style sheet name.
@@ -417,7 +321,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 	public void getPresenter(final Consumer<Object> presenterConsumer) {
 
 		presenterProperty.addListener(
-				(final ObservableValue<? extends Object> o, final Object oldValue, final Object newValue) -> {
+				(final ObservableValue<?> o, final Object oldValue, final Object newValue) -> {
 					presenterConsumer.accept(newValue);
 				});
 	}
@@ -501,7 +405,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 		try {
 			LOGGER.debug("Resource bundle: " + name);
 			return Optional.of(getBundle(name,
-				new ResourceBundleControl(getResourceBundleCharset())));
+					new ResourceBundleControl(getResourceBundleCharset())));
 		} catch (final MissingResourceException ex) {
 			LOGGER.debug("No resource bundle could be determined: " + ex.getMessage());
 			return Optional.empty();

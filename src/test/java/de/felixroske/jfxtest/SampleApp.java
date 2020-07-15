@@ -9,7 +9,8 @@ import javafx.stage.*;
 @SpringBootApplication
 public class SampleApp extends AbstractJavaFxApplicationSupport {
 
-    public static void main(String args[]) {
+    //TODO not running success yet
+    public static void main(String[] args) {
         launch(SampleApp.class, SampleView.class, new SplashScreen(), args);
     }
 

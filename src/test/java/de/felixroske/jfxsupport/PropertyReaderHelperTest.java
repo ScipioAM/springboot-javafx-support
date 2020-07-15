@@ -77,10 +77,10 @@ public class PropertyReaderHelperTest {
         assertEquals("/de/felixroske/jfxsupport/", path);
     }
 
-    class TestObject {
+    static class TestObject {
         private String stringEntry = "UNSET";
 
-		private Long longEntry = Long.valueOf(0);
+		private Long longEntry = 0L;
 
 		public String getStringEntry() {
 			return stringEntry;
